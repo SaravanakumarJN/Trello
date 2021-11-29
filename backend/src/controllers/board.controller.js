@@ -33,7 +33,16 @@ const getBoard = async (req, res) => {
       {
         $group: {
           _id: "$list_id",
-          list_items: { $push: "$$ROOT" },
+          list_items: {
+            $push: {
+              _id: "$_id",
+              name: "$name",
+              description: "$description",
+              position: "$position",
+              list_id: "$list_id",
+              board_id: "$board_id",
+            },
+          },
         },
       },
     ]);
@@ -42,8 +51,9 @@ const getBoard = async (req, res) => {
     cards_array.forEach((ele) => {
       cards[ele._id] = ele.list_items;
     });
+
     lists = lists.map((ele) => {
-      return { ...ele, cards: cards[ele._id] };
+      return { ...ele, cards: cards[ele._id] || [] };
     });
     board.lists = lists;
 

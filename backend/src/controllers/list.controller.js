@@ -1,6 +1,7 @@
 const { List } = require("../models/List.model");
 const { Card } = require("../models/Card.model");
 const { errorTemplate } = require("../utilities/errorTemplate");
+const { getFirst, getLast, getMean } = require("../utilities/getPosition");
 
 const getList = async (req, res) => {
   let { list_id } = req.params;
@@ -77,9 +78,16 @@ const updateListName = async (req, res) => {
 };
 
 const updateListPosition = async (req, res) => {
-  let { position, list_id } = req.body;
+  let { prev_position, next_position, list_id } = req.body;
 
   try {
+    let position =
+      prev_position === undefined
+        ? getFirst(next_position)
+        : next_position === undefined
+        ? getLast(prev_position)
+        : getMean(prev_position, next_position);
+
     let payload = { position };
     let list = await List.findOneAndUpdate({ _id: list_id }, payload, {
       new: true,

@@ -4,20 +4,16 @@ const router = express.Router();
 const {
   createCard,
   getCard,
-  updateCardName,
-  upadateCardDescription,
-  updateCardPosition,
-  updateCardList,
+  updateCardNameDes,
+  updateCardPositionList,
   deleteCard,
 } = require("../controllers/card.controller");
 const { authenticate } = require("../middlewares/authenticate");
 
 router.get("/:card_id", authenticate, getCard);
 router.post("/create", authenticate, createCard);
-router.patch("/name", authenticate, updateCardName);
-router.patch("/description", authenticate, upadateCardDescription);
-router.patch("/position", authenticate, updateCardPosition);
-router.patch("/list", authenticate, updateCardList);
+router.patch("/name_des/:card_id", authenticate, updateCardNameDes);
+router.patch("/position_list/:card_id", authenticate, updateCardPositionList);
 router.delete("/", authenticate, deleteCard);
 
 module.exports = {
