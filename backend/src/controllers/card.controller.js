@@ -1,5 +1,6 @@
 const { Card } = require("../models/Card.model");
 const { errorTemplate } = require("../utilities/errorTemplate");
+const { getFirst, getLast, getMean } = require("../utilities/getPosition");
 
 const getCard = async (req, res) => {
   let { card_id } = req.params;
@@ -50,12 +51,11 @@ const createCard = async (req, res) => {
   }
 };
 
-const updateCardName = async (req, res) => {
-  let { name, card_id } = req.body;
+const updateCardNameDes = async (req, res) => {
+  let { card_id } = req.params;
 
   try {
-    let payload = { name };
-    const card = await Card.findOneAndUpdate({ _id: card_id }, payload, {
+    const card = await Card.findOneAndUpdate({ _id: card_id }, req.body, {
       new: true,
     })
       .lean()
@@ -72,54 +72,21 @@ const updateCardName = async (req, res) => {
   }
 };
 
-const upadateCardDescription = async (req, res) => {
-  let { description, card_id } = req.body;
+const updateCardPositionList = async (req, res) => {
+  let { card_id } = req.params;
+  let { prev_position, next_position, list_id } = req.body;
 
   try {
-    let payload = { description };
-    let card = await Card.findOneAndUpdate({ _id: card_id }, payload, {
-      new: true,
-    })
-      .lean()
-      .exec();
+    let position =
+      prev_position === undefined && next_position === undefined
+        ? 1
+        : prev_position === undefined
+        ? getFirst(next_position)
+        : next_position === undefined
+        ? getLast(prev_position)
+        : getMean(prev_position, next_position);
 
-    return res.status(200).json({
-      error: false,
-      data: {
-        card,
-      },
-    });
-  } catch (error) {
-    return errorTemplate(res, 400, error.message);
-  }
-};
-
-const updateCardPosition = async (req, res) => {
-  let { position, card_id } = req.body;
-
-  try {
-    let payload = { position };
-    let card = await Card.findOneAndUpdate({ _id: card_id }, payload, {
-      new: true,
-    })
-      .lean()
-      .exec();
-
-    return res.status(200).json({
-      error: false,
-      data: {
-        card,
-      },
-    });
-  } catch (error) {
-    return errorTemplate(res, 400, error.message);
-  }
-};
-
-const updateCardList = async (req, res) => {
-  const { list_id, position, card_id } = req.body;
-  try {
-    let payload = { list_id, position };
+    let payload = { position, list_id };
     let card = await Card.findOneAndUpdate({ _id: card_id }, payload, {
       new: true,
     })
@@ -155,9 +122,7 @@ const deleteCard = async (req, res) => {
 module.exports = {
   getCard,
   createCard,
-  updateCardName,
-  upadateCardDescription,
-  updateCardPosition,
-  updateCardList,
+  updateCardNameDes,
+  updateCardPositionList,
   deleteCard,
 };

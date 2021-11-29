@@ -20,6 +20,7 @@ const listSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,
+      select: false,
     },
   },
   {
