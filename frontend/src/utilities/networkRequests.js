@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken } from "./localStorage";
+import { getItem } from "./localStorage";
 let { REACT_APP_BASE_URL: base_url } = process.env;
 base_url = base_url || "http://localhost:8000";
 
@@ -16,7 +16,7 @@ const registerUser = (payload) => {
 };
 
 const getUsersAllBoards = () => {
-  let token = getToken("token");
+  let token = getItem("token");
 
   return axios
     .get(`${base_url}/api/board/user`, {
@@ -28,7 +28,7 @@ const getUsersAllBoards = () => {
 };
 
 const getIndividualBoard = (payload) => {
-  let token = getToken("token");
+  let token = getItem("token");
 
   return axios
     .get(`${base_url}/api/board/${payload}`, {
@@ -40,7 +40,7 @@ const getIndividualBoard = (payload) => {
 };
 
 const addCard = (payload) => {
-  let token = getToken("token");
+  let token = getItem("token");
 
   return axios
     .post(`${base_url}/api/card/create`, payload, {
@@ -52,7 +52,7 @@ const addCard = (payload) => {
 };
 
 const addList = (payload) => {
-  let token = getToken("token");
+  let token = getItem("token");
 
   return axios
     .post(`${base_url}/api/list/create`, payload, {
@@ -63,8 +63,20 @@ const addList = (payload) => {
     .then((res) => res.data);
 };
 
+const addBoard = (payload) => {
+  let token = getItem("token");
+
+  return axios
+    .post(`${base_url}/api/board/create`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data);
+};
+
 const editCardNameDes = ({ _id, payload }) => {
-  let token = getToken("token");
+  let token = getItem("token");
 
   return axios
     .patch(`${base_url}/api/card/name_des/${_id}`, payload, {
@@ -76,7 +88,7 @@ const editCardNameDes = ({ _id, payload }) => {
 };
 
 const editBoardName = (payload) => {
-  let token = getToken("token");
+  let token = getItem("token");
 
   return axios
     .patch(`${base_url}/api/board/`, payload, {
@@ -88,10 +100,22 @@ const editBoardName = (payload) => {
 };
 
 const editListName = (payload) => {
-  let token = getToken("token");
+  let token = getItem("token");
 
   return axios
     .patch(`${base_url}/api/list/name`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data);
+};
+
+const editCardPositionList = ({ _id, payload }) => {
+  let token = getItem("token");
+
+  return axios
+    .patch(`${base_url}/api/card/position_list/${_id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -104,9 +128,11 @@ export {
   registerUser,
   getUsersAllBoards,
   getIndividualBoard,
+  addBoard,
   addList,
   addCard,
   editBoardName,
   editListName,
   editCardNameDes,
+  editCardPositionList,
 };

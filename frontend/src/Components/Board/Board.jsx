@@ -4,20 +4,24 @@ import {
   getIndividualBoard,
   addList,
   editBoardName,
+  editCardPositionList,
 } from "../../utilities/networkRequests";
+import {
+  getPrevNextSameList,
+  getPrevNextDiffList,
+} from "../../utilities/getPositions";
 import { AddFeatureComp } from "../Add_Feature_Comp/AddFeatureComp";
 import { OnClickEditor } from "../On_Click_Editor/OnClickEditor";
 import { List } from "../List/List";
 import styles from "./Board.module.css";
+import { DragDropContext } from "react-beautiful-dnd";
 
 const Board = () => {
   const [boardData, setBoardData] = useState({});
   const [loading, setLoading] = useState(true);
   const { board_id } = useParams();
 
-  useEffect(() => {
-    setLoading(true);
-
+  const getData = () => {
     getIndividualBoard(board_id)
       .then((res) => {
         let { board } = res.data;
@@ -29,6 +33,11 @@ const Board = () => {
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    getData();
   }, []);
 
   //---------------------------------states and methods for AddFeatureComp----------------------------------------
@@ -55,12 +64,17 @@ const Board = () => {
 
       addList(payload)
         .then((res) => {
-          console.log(res);
+          let { list } = res.data;
+
+          setBoardData((prev) => {
+            return { ...prev, lists: [...prev.lists, list] };
+          });
         })
         .catch((error) => {
           console.log(error);
         })
         .finally(() => {
+          setText("");
           hanldeOpenTextEditor();
         });
     }
@@ -107,59 +121,120 @@ const Board = () => {
   };
 
   //---------------------------------------------------------------------------------------------------------------
+
+  const handleDragEnd = (data) => {
+    let { source, destination, draggableId } = data;
+
+    // if no destination
+    if (!destination) {
+      return;
+    }
+
+    let destination_list = boardData?.lists.filter((list, i) => {
+      if (list._id === destination.droppableId) {
+        return true;
+      }
+      return false;
+    })[0];
+
+    let { cards } = destination_list;
+    let { index: des_index } = destination;
+    let { index: sor_index } = source;
+
+    let prev_position;
+    let next_position;
+    if (source.droppableId === destination.droppableId) {
+      let { prev_position: pp, next_position: np } = getPrevNextSameList(
+        sor_index,
+        des_index,
+        cards
+      );
+      prev_position = pp;
+      next_position = np;
+
+      if (prev_position === next_position) {
+        return;
+      }
+    } else {
+      let { prev_position: pp, next_position: np } = getPrevNextDiffList(
+        des_index,
+        cards
+      );
+      prev_position = pp;
+      next_position = np;
+    }
+
+    // console.log(prev_position, next_position);
+    let payload = {
+      list_id: destination.droppableId,
+      prev_position,
+      next_position,
+    };
+    editCardPositionList({ _id: draggableId, payload })
+      .then(() => {
+        getData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   let { lists, name } = boardData;
   return (
-    <div className={styles.container}>
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <>
-          {openEditName ? (
-            <div className={styles.header}>
-              <OnClickEditor
-                editName={editName}
-                setEditName={setEditName}
-                handleOpenEditorName={handleOpenEditorName}
-                handleKeyDown={handleKeyDown}
-                input_ref={input_ref}
-              />
-            </div>
-          ) : (
-            <div onClick={handleOpenEditorName} className={styles.header}>
-              {name}
-            </div>
-          )}
-          <div className={styles.list_container}>
-            {lists?.map((list) => {
-              return (
-                <List
-                  key={list._id}
-                  list={list}
-                  setBoardData={setBoardData}
-                ></List>
-              );
-            })}
-            <div className={styles.add_feature_comp_container}>
-              {openTextEditor ? (
-                <AddFeatureComp
-                  text={text}
-                  setText={setText}
-                  hanldeOpenTextEditor={hanldeOpenTextEditor}
-                  handleAdd={handleAddList}
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div className={styles.container}>
+        {loading ? (
+          <div className='loading_indicator'>Loading...</div>
+        ) : (
+          <>
+            {openEditName ? (
+              <div className={styles.header}>
+                <OnClickEditor
+                  editName={editName}
+                  setEditName={setEditName}
+                  handleOpenEditorName={handleOpenEditorName}
+                  handleKeyDown={handleKeyDown}
+                  input_ref={input_ref}
                 />
-              ) : (
-                <button
-                  className={styles.add_card_btn}
-                  onClick={hanldeOpenTextEditor}
-                >
-                  Add list
-                </button>
-              )}
+              </div>
+            ) : (
+              <div onClick={handleOpenEditorName} className={styles.header}>
+                {name}
+              </div>
+            )}
+            <div className={styles.list_container}>
+              {lists?.map((list, i) => {
+                return (
+                  <List
+                    key={list._id}
+                    list={list}
+                    list_index={i}
+                    setBoardData={setBoardData}
+                  ></List>
+                );
+              })}
+              <div className={styles.add_feature_comp_container}>
+                {openTextEditor ? (
+                  <AddFeatureComp
+                    text={text}
+                    setText={setText}
+                    hanldeOpenTextEditor={hanldeOpenTextEditor}
+                    handleAdd={handleAddList}
+                  />
+                ) : (
+                  <button
+                    className={styles.add_list_btn}
+                    onClick={hanldeOpenTextEditor}
+                  >
+                    Add list
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
+    </DragDropContext>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./Login.module.css";
-import { getToken, setToken } from "../../utilities/localStorage";
+import { getItem, setItem } from "../../utilities/localStorage";
 import { loginUser } from "../../utilities/networkRequests";
 import { useHistory } from "react-router-dom";
 
@@ -15,7 +15,7 @@ const Login = () => {
   const history = useHistory();
 
   useEffect(() => {
-    let token = getToken();
+    let token = getItem("token");
     if (token !== null && token !== undefined) {
       history.push("/home");
     }
@@ -31,10 +31,12 @@ const Login = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      let { token } = await loginUser(form);
+      let { data } = await loginUser(form);
+      let { token, user_details } = data;
 
       if (token) {
-        setToken(token);
+        setItem("token", token);
+        setItem("user_details", user_details);
         await setError(false);
         await setLoading(false);
         history.push("/home");

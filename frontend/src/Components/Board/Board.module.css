@@ -1,7 +1,6 @@
 .container {
-  padding: 20px 40px;
+  padding: 0 40px;
   /* border: 1px solid red; */
-  min-height: 95vh;
 }
 
 .header {
@@ -31,7 +30,7 @@
   /* border: 1px solid red; */
 }
 
-.add_card_btn {
+.add_list_btn {
   background-color: transparent;
   border: none;
   outline: none;

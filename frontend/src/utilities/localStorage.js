@@ -1,16 +1,15 @@
-const getToken = () => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
+const getItem = (key) => {
+  let token = JSON.parse(localStorage.getItem(key));
   return token;
 };
 
-const setToken = (token) => {
-  let stringified_token = JSON.stringify(token);
-  localStorage.setItem("token", stringified_token);
+const setItem = (key, value) => {
+  let stringified = JSON.stringify(value);
+  localStorage.setItem(key, stringified);
 };
 
-const clearToken = () => {
-  localStorage.removeItem("token");
+const clearItem = (key) => {
+  localStorage.removeItem(key);
 };
 
-export { getToken, setToken, clearToken };
+export { getItem, setItem, clearItem };

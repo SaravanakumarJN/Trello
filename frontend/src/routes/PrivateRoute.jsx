@@ -1,5 +1,5 @@
 import { Route, Redirect } from "react-router-dom";
-import { getToken } from "../utilities/localStorage";
+import { getItem } from "../utilities/localStorage";
 
 const PrivateRoutes = ({
   path,
@@ -7,7 +7,7 @@ const PrivateRoutes = ({
   exact = false,
   redirectLink = "/",
 }) => {
-  const token = getToken();
+  const token = getItem("token");
 
   if (token === null || token === undefined) {
     return <Redirect to={redirectLink}></Redirect>;
