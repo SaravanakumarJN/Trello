@@ -1,5 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { DragDropContext } from "react-beautiful-dnd";
+import { useSnackbar } from "react-simple-snackbar";
+
+import styles from "./Board.module.css";
+import { List } from "../List/List";
+import { AddFeatureComp } from "../Add_Feature_Comp/AddFeatureComp";
+import { OnClickEditor } from "../On_Click_Editor/OnClickEditor";
 import {
   getIndividualBoard,
   addList,
@@ -10,16 +17,14 @@ import {
   getPrevNextSameList,
   getPrevNextDiffList,
 } from "../../utilities/getPositions";
-import { AddFeatureComp } from "../Add_Feature_Comp/AddFeatureComp";
-import { OnClickEditor } from "../On_Click_Editor/OnClickEditor";
-import { List } from "../List/List";
-import styles from "./Board.module.css";
-import { DragDropContext } from "react-beautiful-dnd";
 
 const Board = () => {
   const [boardData, setBoardData] = useState({});
   const [loading, setLoading] = useState(true);
   const { board_id } = useParams();
+  const [openSnackbar] = useSnackbar({
+    position: "top-center",
+  });
 
   const getData = () => {
     getIndividualBoard(board_id)
@@ -27,8 +32,8 @@ const Board = () => {
         let { board } = res.data;
         setBoardData(board);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(({ response }) => {
+        openSnackbar(response.data.message);
       })
       .finally(() => {
         setLoading(false);
@@ -70,8 +75,8 @@ const Board = () => {
             return { ...prev, lists: [...prev.lists, list] };
           });
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(({ response }) => {
+          openSnackbar(response.data.message);
         })
         .finally(() => {
           setText("");
@@ -111,8 +116,8 @@ const Board = () => {
             let { board } = res.data;
             setBoardData({ ...boardData, name: board.name });
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(({ response }) => {
+            openSnackbar(response.data.message);
           });
       }
       handleOpenEditorName();
@@ -164,7 +169,6 @@ const Board = () => {
       next_position = np;
     }
 
-    // console.log(prev_position, next_position);
     let payload = {
       list_id: destination.droppableId,
       prev_position,
@@ -174,8 +178,8 @@ const Board = () => {
       .then(() => {
         getData();
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(({ response }) => {
+        openSnackbar(response.data.message);
       });
   };
 
