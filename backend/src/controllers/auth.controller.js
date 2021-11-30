@@ -9,17 +9,18 @@ const registerUser = async (req, res) => {
     let existing_check = await User.findOne({ email }).lean().exec();
 
     if (existing_check) {
-      return errorTemplate(res, 400, "User already exists. Please login");
+      return errorTemplate(res, 400, "User already exists");
     }
 
     let payload = { email, name, password };
     let new_user = await User.create(payload);
-    let { _id } = new_user;
-    let token = await encode({ _id });
+    // let { _id } = new_user;
+    // let token = await encode({ _id });
 
     return res.status(200).json({
       error: false,
-      token,
+      message: "Registered Successfully",
+      // token,
     });
   } catch (error) {
     return errorTemplate(res, 400, error.message);
@@ -33,7 +34,7 @@ const loginUser = async (req, res) => {
     let user = await User.findOne({ email }).exec();
 
     if (!user) {
-      return errorTemplate(res, 400, "User doesn't exists. Please login");
+      return errorTemplate(res, 400, "User doesn't exists. Please register");
     }
 
     let password_verification = await user.verify_password(password);

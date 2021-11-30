@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { addBoard, getUsersAllBoards } from "../../utilities/networkRequests";
+import { useSnackbar } from "react-simple-snackbar";
+
+import styles from "./Home.module.css";
 import { BoardCard } from "../Board_Card/BoardCard";
 import { AddFeatureComp } from "../Add_Feature_Comp/AddFeatureComp";
-import styles from "./Home.module.css";
+import { addBoard, getUsersAllBoards } from "../../utilities/networkRequests";
 import { getItem } from "../../utilities/localStorage";
 
 const Home = () => {
@@ -12,6 +14,9 @@ const Home = () => {
   const history = useHistory();
   let user_details = getItem("user_details");
   let name = user_details && user_details.name ? user_details.name : "User";
+  const [openSnackbar] = useSnackbar({
+    position: "top-center",
+  });
 
   const getData = () => {
     getUsersAllBoards()
@@ -19,8 +24,8 @@ const Home = () => {
         let { boards } = res.data;
         setUserBoards(boards);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(({ response }) => {
+        openSnackbar(response.data.message);
       })
       .finally(() => {
         setLoading(false);
@@ -55,8 +60,8 @@ const Home = () => {
         .then(() => {
           getData();
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(({ response }) => {
+          openSnackbar(response.data.message);
         })
         .finally(() => {
           setText("");

@@ -1,13 +1,19 @@
 import { useState, useEffect, useRef } from "react";
-import { addCard, editListName } from "../../utilities/networkRequests";
+import { Droppable } from "react-beautiful-dnd";
+import { useSnackbar } from "react-simple-snackbar";
+
+import styles from "./List.module.css";
+import { Card } from "../Card/Card";
 import { AddFeatureComp } from "../Add_Feature_Comp/AddFeatureComp";
 import { OnClickEditor } from "../On_Click_Editor/OnClickEditor";
-import { Card } from "../Card/Card";
-import styles from "./List.module.css";
-import { Droppable } from "react-beautiful-dnd";
+import { addCard, editListName } from "../../utilities/networkRequests";
+import { getDeepCopy } from "../../utilities/getDeepCopy";
 
 const List = ({ list, setBoardData, list_index }) => {
   const { cards, _id, board_id, name } = list;
+  const [openSnackbar] = useSnackbar({
+    position: "top-center",
+  });
 
   //---------------------------------states and methods for AddFeatureComp----------------------------------------
 
@@ -34,7 +40,7 @@ const List = ({ list, setBoardData, list_index }) => {
         .then((res) => {
           let { card } = res.data;
           setBoardData((prev) => {
-            let lists_copy = JSON.parse(JSON.stringify([...prev.lists]));
+            let lists_copy = getDeepCopy([...prev.lists]);
             let to_update_list = { ...lists_copy[list_index] };
             to_update_list.cards.push(card);
             lists_copy[list_index] = to_update_list;
@@ -42,8 +48,8 @@ const List = ({ list, setBoardData, list_index }) => {
             return { ...prev, lists: lists_copy };
           });
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(({ response }) => {
+          openSnackbar(response.data.message);
         })
         .finally(() => {
           setText("");
@@ -81,7 +87,7 @@ const List = ({ list, setBoardData, list_index }) => {
             let { name } = res.data.list;
 
             setBoardData((prev) => {
-              let lists_copy = JSON.parse(JSON.stringify([...prev.lists]));
+              let lists_copy = getDeepCopy([...prev.lists]);
               let to_update_list = { ...lists_copy[list_index] };
               to_update_list.name = name;
               lists_copy[list_index] = to_update_list;
@@ -89,8 +95,8 @@ const List = ({ list, setBoardData, list_index }) => {
               return { ...prev, lists: lists_copy };
             });
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(({ response }) => {
+            openSnackbar(response.data.message);
           });
       }
       handleOpenEditorName();

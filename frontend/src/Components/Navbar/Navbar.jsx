@@ -1,6 +1,7 @@
+import { useHistory } from "react-router-dom";
+
 import styles from "./Navbar.module.css";
 import { clearItem } from "../../utilities/localStorage";
-import { useHistory } from "react-router-dom";
 
 const Navbar = () => {
   const history = useHistory();
