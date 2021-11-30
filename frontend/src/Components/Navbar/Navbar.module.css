@@ -1,0 +1,32 @@
+.nav {
+  position: fixed;
+  top: 0;
+  z-index: 2;
+  width: 100vw;
+  height: 60px;
+  padding: 20px;
+  display: flex;
+  border-bottom: 1px solid #e5e5e5;
+  box-sizing: border-box;
+  backdrop-filter: saturate(180%) blur(5px);
+  background-color: hsl(0deg 0% 100% / 60%);
+  /* border: 1px solid red; */
+}
+
+.nav_space {
+  flex-grow: 1;
+}
+
+.nav_clickables {
+  cursor: pointer;
+  font-weight: 500;
+  margin: 0 20px;
+}
+
+.nav_clickables:hover {
+  color: #ff0066;
+}
+
+.nav + div {
+  margin-top: 70px;
+}

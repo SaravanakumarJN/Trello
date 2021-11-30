@@ -1,0 +1,5 @@
+.board_cards_container {
+  display: flex;
+  padding: 20px;
+  /* border: 1px solid red; */
+}

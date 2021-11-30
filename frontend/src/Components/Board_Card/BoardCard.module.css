@@ -1,0 +1,10 @@
+.card_container {
+  min-width: 200px;
+  margin: 0 15px;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 3px;
+  border: 1px solid #bfbfbf;
+  /* border: 1px solid red; */
+}
