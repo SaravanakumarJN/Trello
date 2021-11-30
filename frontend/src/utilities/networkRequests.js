@@ -1,15 +1,17 @@
 import axios from "axios";
 import { getToken } from "./localStorage";
+let { REACT_APP_BASE_URL: base_url } = process.env;
+base_url = base_url || "http://localhost:8000";
 
 const loginUser = (payload) => {
   return axios
-    .post("http://localhost:8000/api/auth/login", payload)
+    .post(`${base_url}/api/auth/login`, payload)
     .then((res) => res.data);
 };
 
 const registerUser = (payload) => {
   return axios
-    .post("http://localhost:8000/api/auth/register", payload)
+    .post(`${base_url}/api/auth/register`, payload)
     .then((res) => res.data);
 };
 
@@ -17,7 +19,7 @@ const getUsersAllBoards = () => {
   let token = getToken("token");
 
   return axios
-    .get("http://localhost:8000/api/board/user", {
+    .get(`${base_url}/api/board/user`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -29,7 +31,7 @@ const getIndividualBoard = (payload) => {
   let token = getToken("token");
 
   return axios
-    .get(`http://localhost:8000/api/board/${payload}`, {
+    .get(`${base_url}/api/board/${payload}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -41,7 +43,7 @@ const addCard = (payload) => {
   let token = getToken("token");
 
   return axios
-    .post("http://localhost:8000/api/card/create", payload, {
+    .post(`${base_url}/api/card/create`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -53,7 +55,7 @@ const addList = (payload) => {
   let token = getToken("token");
 
   return axios
-    .post("http://localhost:8000/api/list/create", payload, {
+    .post(`${base_url}/api/list/create`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -65,7 +67,7 @@ const editCardNameDes = ({ _id, payload }) => {
   let token = getToken("token");
 
   return axios
-    .patch(`http://localhost:8000/api/card/name_des/${_id}`, payload, {
+    .patch(`${base_url}/api/card/name_des/${_id}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -77,7 +79,7 @@ const editBoardName = (payload) => {
   let token = getToken("token");
 
   return axios
-    .patch(`http://localhost:8000/api/board/`, payload, {
+    .patch(`${base_url}/api/board/`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -89,7 +91,7 @@ const editListName = (payload) => {
   let token = getToken("token");
 
   return axios
-    .patch(`http://localhost:8000/api/list/name`, payload, {
+    .patch(`${base_url}/api/list/name`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
