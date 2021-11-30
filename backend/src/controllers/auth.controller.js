@@ -45,9 +45,16 @@ const loginUser = async (req, res) => {
     let { _id } = user;
     let token = await encode({ _id });
 
+    let user_details = {
+      name: user.name,
+      email: user.email,
+    };
     return res.status(200).json({
       error: false,
-      token,
+      data: {
+        token,
+        user_details,
+      },
     });
   } catch (error) {
     return errorTemplate(res, 400, error.message);

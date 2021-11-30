@@ -12,7 +12,7 @@ function getMean(prev_position, next_poistion) {
 
 function getFirst(next_poistion) {
   const x = new Decimal(next_poistion);
-  const y = new Decimal(0.1);
+  const y = new Decimal(1);
 
   const first = x.minus(y);
   return first;
@@ -20,7 +20,7 @@ function getFirst(next_poistion) {
 
 function getLast(prev_position) {
   const x = new Decimal(prev_position);
-  const y = new Decimal(0.1);
+  const y = new Decimal(1);
 
   const last = x.plus(y);
   return last;

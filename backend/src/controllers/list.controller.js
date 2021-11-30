@@ -43,6 +43,7 @@ const createList = async (req, res) => {
     };
 
     let list = await List.create(payload);
+    list._doc.cards = [];
 
     return res.status(200).json({
       error: false,
