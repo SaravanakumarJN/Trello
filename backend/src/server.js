@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv").config();
+const cors = require("cors");
 
 const { connect } = require("./config/db.config");
 const { authRouter } = require("./routes/auth.routes");
@@ -8,6 +9,13 @@ const { listRouter } = require("./routes/list.routes");
 const { cardRouter } = require("./routes/card.routes");
 
 const app = express();
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
