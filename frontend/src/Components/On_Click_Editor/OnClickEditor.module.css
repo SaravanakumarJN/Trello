@@ -1,0 +1,19 @@
+.edit_field {
+  display: flex;
+}
+
+.edit_field_input {
+  flex-grow: 1;
+}
+
+.edit_field_input > input {
+  width: 94%;
+  padding: 2px 3px;
+  text-align: center;
+  margin: -4px 0;
+}
+
+.edit_field_cancel_btn {
+  font-weight: 500;
+  cursor: pointer;
+}

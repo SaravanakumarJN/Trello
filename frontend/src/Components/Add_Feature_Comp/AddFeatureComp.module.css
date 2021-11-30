@@ -1,0 +1,25 @@
+.textEditor {
+  margin: 10px 0;
+  padding: 5px;
+  outline: none;
+}
+
+.confirm_btn,
+.cancel_btn {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 10px;
+  border-radius: 3px;
+}
+
+.confirm_btn {
+  background-color: #39ac73;
+  color: white;
+}
+
+.cancel_btn {
+  background-color: #ff3333;
+  color: white;
+}
