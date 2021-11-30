@@ -1,12 +1,12 @@
 import styles from "./Navbar.module.css";
-import { clearToken } from "../../utilities/localStorage";
+import { clearItem } from "../../utilities/localStorage";
 import { useHistory } from "react-router-dom";
 
 const Navbar = () => {
   const history = useHistory();
 
   const handleLogout = () => {
-    clearToken();
+    clearItem("token");
     window.location.reload();
   };
 

@@ -4,8 +4,9 @@ import { AddFeatureComp } from "../Add_Feature_Comp/AddFeatureComp";
 import { OnClickEditor } from "../On_Click_Editor/OnClickEditor";
 import { Card } from "../Card/Card";
 import styles from "./List.module.css";
+import { Droppable } from "react-beautiful-dnd";
 
-const List = ({ list, setBoardData }) => {
+const List = ({ list, setBoardData, list_index }) => {
   const { cards, _id, board_id, name } = list;
 
   //---------------------------------states and methods for AddFeatureComp----------------------------------------
@@ -31,13 +32,21 @@ const List = ({ list, setBoardData }) => {
 
       addCard(payload)
         .then((res) => {
-          let { name } = res.data.list;
-          console.log(name);
+          let { card } = res.data;
+          setBoardData((prev) => {
+            let lists_copy = JSON.parse(JSON.stringify([...prev.lists]));
+            let to_update_list = { ...lists_copy[list_index] };
+            to_update_list.cards.push(card);
+            lists_copy[list_index] = to_update_list;
+
+            return { ...prev, lists: lists_copy };
+          });
         })
         .catch((error) => {
           console.log(error);
         })
         .finally(() => {
+          setText("");
           hanldeOpenTextEditor();
         });
     }
@@ -45,7 +54,7 @@ const List = ({ list, setBoardData }) => {
 
   //---------------------------------states and methods for OnClickEditor----------------------------------------
 
-  const [editName, setEditName] = useState(name);
+  const [editName, setEditName] = useState("");
   const [openEditName, setOpenEditName] = useState(false);
   const input_ref = useRef();
 
@@ -66,18 +75,26 @@ const List = ({ list, setBoardData }) => {
           list_id: _id,
           name: editName,
         };
-        console.log(payload);
 
         editListName(payload)
           .then((res) => {
-            console.log(res);
+            let { name } = res.data.list;
+
+            setBoardData((prev) => {
+              let lists_copy = JSON.parse(JSON.stringify([...prev.lists]));
+              let to_update_list = { ...lists_copy[list_index] };
+              to_update_list.name = name;
+              lists_copy[list_index] = to_update_list;
+
+              return { ...prev, lists: lists_copy };
+            });
           })
           .catch((error) => {
             console.log(error);
           });
       }
       handleOpenEditorName();
-      setEditName(name);
+      setEditName("");
     }
   };
 
@@ -101,9 +118,29 @@ const List = ({ list, setBoardData }) => {
         </div>
       )}
       <div className={styles.card_container}>
-        {cards?.map((card) => {
-          return <Card key={card._id} card={card} />;
-        })}
+        <Droppable droppableId={_id}>
+          {(provided) => {
+            return (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                {cards.length === 0 && (
+                  <div className={styles.card_container_empty}></div>
+                )}
+                {cards?.map((card, i) => {
+                  return (
+                    <Card
+                      key={card._id}
+                      card={card}
+                      list_index={list_index}
+                      card_index={i}
+                      setBoardData={setBoardData}
+                    />
+                  );
+                })}
+                {provided.placeholder}
+              </div>
+            );
+          }}
+        </Droppable>
         {openTextEditor ? (
           <AddFeatureComp
             text={text}

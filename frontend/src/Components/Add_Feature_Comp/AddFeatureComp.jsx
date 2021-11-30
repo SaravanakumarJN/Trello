@@ -2,7 +2,7 @@ import styles from "./AddFeatureComp.module.css";
 
 const AddFeatureComp = ({ text, setText, hanldeOpenTextEditor, handleAdd }) => {
   return (
-    <div>
+    <div className={styles.container}>
       <textarea
         className={styles.textEditor}
         placeholder='Enter name'

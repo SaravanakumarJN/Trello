@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { getUsersAllBoards } from "../../utilities/networkRequests";
+import { addBoard, getUsersAllBoards } from "../../utilities/networkRequests";
 import { BoardCard } from "../Board_Card/BoardCard";
+import { AddFeatureComp } from "../Add_Feature_Comp/AddFeatureComp";
 import styles from "./Home.module.css";
+import { getItem } from "../../utilities/localStorage";
 
 const Home = () => {
   const [userBoards, setUserBoards] = useState([]);
   const [loading, setLoading] = useState(true);
   const history = useHistory();
+  let user_details = getItem("user_details");
+  let name = user_details && user_details.name ? user_details.name : "User";
 
-  useEffect(() => {
-    setLoading(true);
-
+  const getData = () => {
     getUsersAllBoards()
       .then((res) => {
         let { boards } = res.data;
@@ -23,22 +25,57 @@ const Home = () => {
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    getData();
   }, []);
 
   const handleNavigateToBoard = (board_id) => {
     history.push(`/board/${board_id}`);
   };
 
+  //---------------------------------states and methods for AddFeatureComp----------------------------------------
+
+  const [text, setText] = useState("");
+  const [openTextEditor, setOpenTextEditor] = useState(false);
+
+  const hanldeOpenTextEditor = () => {
+    setOpenTextEditor(!openTextEditor);
+  };
+
+  const handleAddBoard = () => {
+    if (text.trim().length > 0) {
+      let payload = {
+        name: text,
+      };
+
+      addBoard(payload)
+        .then(() => {
+          getData();
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setText("");
+          hanldeOpenTextEditor();
+        });
+    }
+  };
+
+  //---------------------------------------------------------------------------------------------------------------
+
   return (
     <div className={styles.container}>
       {loading ? (
-        <div>Loading...</div>
+        <div className='loading_indicator'>Loading...</div>
       ) : (
-        <div className={styles.board_cards_container}>
-          {userBoards.length === 0 ? (
-            <div>No boards created yet</div>
-          ) : (
-            userBoards?.map((board) => {
+        <>
+          <div className={styles.header}>{name}'s Boards</div>
+          <div className={styles.board_cards_container}>
+            {userBoards?.map((board) => {
               return (
                 <BoardCard
                   key={board._id}
@@ -47,9 +84,26 @@ const Home = () => {
                   board_id={board._id}
                 />
               );
-            })
-          )}
-        </div>
+            })}
+            <div className={styles.add_feature_comp_container}>
+              {openTextEditor ? (
+                <AddFeatureComp
+                  text={text}
+                  setText={setText}
+                  hanldeOpenTextEditor={hanldeOpenTextEditor}
+                  handleAdd={handleAddBoard}
+                />
+              ) : (
+                <button
+                  className={styles.add_board_btn}
+                  onClick={hanldeOpenTextEditor}
+                >
+                  Add Board
+                </button>
+              )}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
