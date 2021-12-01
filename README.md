@@ -38,6 +38,13 @@ Web app to manage tasks and projects.
 - react-simple-snackbar
 - react-icons
 
+## Additional Libraries used for backend
+- dotenv
+- cors
+- jsonwebtoken
+- bcryptjs
+- decimal.js
+
 ## Steps to install the project
 ### 1. Basic Software Installations
 - Git
