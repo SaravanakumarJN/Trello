@@ -43,8 +43,16 @@ const Login = () => {
           history.push("/home");
         }
       })
-      .catch(({ response }) => {
-        openSnackbar(response.data.message);
+      .catch((error) => {
+        if (error.response) {
+          openSnackbar(
+            error.response.data.message
+              ? error.response.data.message
+              : error.response.data
+          );
+        } else {
+          openSnackbar(error.message);
+        }
       });
   };
 

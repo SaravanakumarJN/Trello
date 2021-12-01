@@ -32,8 +32,16 @@ const Board = () => {
         let { board } = res.data;
         setBoardData(board);
       })
-      .catch(({ response }) => {
-        openSnackbar(response.data.message);
+      .catch((error) => {
+        if (error.response) {
+          openSnackbar(
+            error.response.data.message
+              ? error.response.data.message
+              : error.response.data
+          );
+        } else {
+          openSnackbar(error.message);
+        }
       })
       .finally(() => {
         setLoading(false);
@@ -75,8 +83,16 @@ const Board = () => {
             return { ...prev, lists: [...prev.lists, list] };
           });
         })
-        .catch(({ response }) => {
-          openSnackbar(response.data.message);
+        .catch((error) => {
+          if (error.response) {
+            openSnackbar(
+              error.response.data.message
+                ? error.response.data.message
+                : error.response.data
+            );
+          } else {
+            openSnackbar(error.message);
+          }
         })
         .finally(() => {
           setText("");
@@ -116,8 +132,16 @@ const Board = () => {
             let { board } = res.data;
             setBoardData({ ...boardData, name: board.name });
           })
-          .catch(({ response }) => {
-            openSnackbar(response.data.message);
+          .catch((error) => {
+            if (error.response) {
+              openSnackbar(
+                error.response.data.message
+                  ? error.response.data.message
+                  : error.response.data
+              );
+            } else {
+              openSnackbar(error.message);
+            }
           });
       }
       handleOpenEditorName();
@@ -178,8 +202,16 @@ const Board = () => {
       .then(() => {
         getData();
       })
-      .catch(({ response }) => {
-        openSnackbar(response.data.message);
+      .catch((error) => {
+        if (error.response) {
+          openSnackbar(
+            error.response.data.message
+              ? error.response.data.message
+              : error.response.data
+          );
+        } else {
+          openSnackbar(error.message);
+        }
       });
   };
 

@@ -48,8 +48,16 @@ const List = ({ list, setBoardData, list_index }) => {
             return { ...prev, lists: lists_copy };
           });
         })
-        .catch(({ response }) => {
-          openSnackbar(response.data.message);
+        .catch((error) => {
+          if (error.response) {
+            openSnackbar(
+              error.response.data.message
+                ? error.response.data.message
+                : error.response.data
+            );
+          } else {
+            openSnackbar(error.message);
+          }
         })
         .finally(() => {
           setText("");
@@ -95,8 +103,16 @@ const List = ({ list, setBoardData, list_index }) => {
               return { ...prev, lists: lists_copy };
             });
           })
-          .catch(({ response }) => {
-            openSnackbar(response.data.message);
+          .catch((error) => {
+            if (error.response) {
+              openSnackbar(
+                error.response.data.message
+                  ? error.response.data.message
+                  : error.response.data
+              );
+            } else {
+              openSnackbar(error.message);
+            }
           });
       }
       handleOpenEditorName();

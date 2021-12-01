@@ -24,8 +24,16 @@ const Home = () => {
         let { boards } = res.data;
         setUserBoards(boards);
       })
-      .catch(({ response }) => {
-        openSnackbar(response.data.message);
+      .catch((error) => {
+        if (error.response) {
+          openSnackbar(
+            error.response.data.message
+              ? error.response.data.message
+              : error.response.data
+          );
+        } else {
+          openSnackbar(error.message);
+        }
       })
       .finally(() => {
         setLoading(false);
@@ -60,8 +68,16 @@ const Home = () => {
         .then(() => {
           getData();
         })
-        .catch(({ response }) => {
-          openSnackbar(response.data.message);
+        .catch((error) => {
+          if (error.response) {
+            openSnackbar(
+              error.response.data.message
+                ? error.response.data.message
+                : error.response.data
+            );
+          } else {
+            openSnackbar(error.message);
+          }
         })
         .finally(() => {
           setText("");
