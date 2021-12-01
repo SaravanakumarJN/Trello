@@ -14,9 +14,20 @@
 .card_name {
   flex-grow: 1;
   cursor: pointer;
+  overflow-y: auto;
+}
+
+.card_name::-webkit-scrollbar {
+  display: none;
+}
+
+.card_name {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .card_edit_btn {
+  margin-left: 10px;
   cursor: pointer;
 }
 
@@ -25,4 +36,52 @@
   color: #666666;
   margin-top: 5px;
   /* border: 1px solid red; */
+}
+
+.modal_header {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.modal_container {
+  padding: 10px;
+  min-width: 300px;
+  /* border: 1px solid red; */
+}
+
+.modal_container_items {
+  margin-bottom: 15px;
+  /* border: 1px solid red; */
+}
+
+.modal_container_items > input,
+.modal_container_items > textarea {
+  width: 95%;
+  padding: 5px 7px;
+}
+
+.modal_container_item_label {
+  margin-bottom: 3px;
+}
+
+.modal_container > button {
+  margin-right: 10px;
+  padding: 5px 7px;
+  outline: none;
+  border: none;
+  border-radius: 2px;
+  color: white;
+}
+
+.modal_container > button:hover {
+  cursor: pointer;
+}
+
+.modal_container_ok_btn {
+  background-color: #39ac73;
+}
+
+.modal_container_cancel_btn {
+  background-color: #ff3333;
 }

@@ -17,6 +17,7 @@
   display: flex;
   align-items: flex-start;
   overflow-x: scroll;
+  min-height: 75vh;
   /* border: 1px solid red; */
 }
 
