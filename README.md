@@ -8,10 +8,10 @@ Web app to manage tasks and projects.
 - Regitser User
 - Login User
 - Home page
-    - Displays all user's boards
+    - Display all user's boards
     - Feature to create new board
 - Individual Board page
-    - Displays all user's lists and cards
+    - Display all user's lists and cards
     - Feature to edit board name on click of the board name
     - Feature to create new list and card
     - Feature to edit list or card name on click of list or card name
@@ -30,7 +30,7 @@ Web app to manage tasks and projects.
 - Express JS
 - MongoDB
 
-## Additional Libraries used for frontend
+## Additional libraries used for frontend
 - react-router-dom
 - axios
 - react-beautiful-dnd
@@ -38,7 +38,7 @@ Web app to manage tasks and projects.
 - react-simple-snackbar
 - react-icons
 
-## Additional Libraries used for backend
+## Additional libraries used for backend
 - dotenv
 - cors
 - jsonwebtoken
@@ -51,7 +51,7 @@ Web app to manage tasks and projects.
 - VS code
 - Node js
 - MongoDB
-- Nodemon (global npm package)
+- Nodemon (optional)
 
 ### 2. Clone the repository into local machine
 - In terminal, navigate to folder in which you need the clone and run `git clone https://github.com/SaravanakumarJN/swipe_pages_assessment.git`
@@ -64,7 +64,9 @@ Web app to manage tasks and projects.
 ### 4. Run application
 - Before running the application, kill the applications currently running on port 3000 (for frontend) and port 8000 (for backend)
 - Open the clonned repository,
-    - Navigate to backend folder and run `npm run devStart`in terminal
+    - Navigate to backend folder and 
+        - if nodemon is installed run `npm run devStart`in terminal
+        - else run `npm start`in terminal
     - Navigate to frontend folder and run `npm start` in terminal
 - Your application is now running on `http://localhost:3000/`
 - **Note : Secret keys has not been pushed to the repository, .env.example file is added for reference. Keys need to be added for proper working of the application.**
