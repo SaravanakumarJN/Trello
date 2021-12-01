@@ -80,16 +80,20 @@ const Card = ({ card, setBoardData, card_index, list_index }) => {
   }, [name, description]);
 
   const handleUpdate = () => {
-    let data = {
-      _id,
-      payload: {
-        name: modalState.name,
-        description: modalState.description,
-      },
-    };
-    handleEditCardNameDes(data).finally(() => {
-      hanldeModalClose();
-    });
+    if (modalState.name !== "") {
+      let data = {
+        _id,
+        payload: {
+          name: modalState.name,
+          description: modalState.description,
+        },
+      };
+      handleEditCardNameDes(data).finally(() => {
+        hanldeModalClose();
+      });
+    } else {
+      openSnackbar("Card name cannot be empty");
+    }
   };
 
   //---------------------------------states and methods for OnClickEditor----------------------------------------
