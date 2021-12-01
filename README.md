@@ -1,6 +1,9 @@
 # Trello clone (Kanban Board)
 Web app to manage tasks and projects.
 
+## Image Sample
+![Sample image of project](https://i.imgur.com/q1Ur2kC.png)
+
 ## Features Built
 - Regitser User
 - Login User
