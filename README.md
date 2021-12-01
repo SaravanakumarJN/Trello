@@ -60,4 +60,4 @@ Web app to manage tasks and projects.
     - Navigate to backend folder and run `npm run devStart`in terminal
     - Navigate to frontend folder and run `npm start` in terminal
 - Your application is now running on `http://localhost:3000/`
-- **Note : Secret keys has not been pushed to the repository, .env template file is added for reference. Keys need to be added for proper working of the application.**
+- **Note : Secret keys has not been pushed to the repository, .env.example file is added for reference. Keys need to be added for proper working of the application.**
