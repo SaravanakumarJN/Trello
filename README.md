@@ -62,7 +62,10 @@ Web app to manage tasks and projects.
     - Navigate to backend folder and run `npm install` in terminal
  
 ### 4. Run application
-- Before running the application, kill the applications currently running on port 3000 (for frontend) and port 8000 (for backend)
+- Before running the application, 
+    - Kill the applications currently running on port 3000 (for frontend) and port 8000 (for backend)
+    - Clear the localStorage of the browser (http://localhost:3000)
+    - Add the required env file
 - Open the clonned repository,
     - Navigate to backend folder and 
         - if nodemon is installed run `npm run devStart`in terminal
