@@ -5,7 +5,7 @@ Web app to manage tasks and projects.
 ![Sample image of project](https://i.imgur.com/q1Ur2kC.png)
 
 ## Features Built
-- Regitser User
+- Register User
 - Login User
 - Home page
     - Display all user's boards
