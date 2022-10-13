@@ -54,7 +54,7 @@ Web app to manage tasks and projects.
 - Nodemon (optional)
 
 ### 2. Clone the repository into local machine
-- In terminal, navigate to folder in which you need the clone and run `git clone https://github.com/SaravanakumarJN/swipe_pages_assessment.git`
+- In terminal, navigate to folder in which you need the clone and run `git clone https://github.com/SaravanakumarJN/Trello.git`
 
 ### 3. NPM package installations
 - Open the clonned repository,
